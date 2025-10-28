@@ -2,28 +2,23 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 /**
- * Módulo para el rol Administrador.  Permite dar de alta productos y
- * proveedores, eliminar productos, y visualizar listados de inventario y ventas.
+ * Módulo para el rol Administrador.  CRUD de productos y proveedores + listados.
  */
 function AdminModule() {
   const [productos, setProductos] = useState([]);
   const [proveedores, setProveedores] = useState([]);
   const [ventas, setVentas] = useState([]);
-  // Campos para nuevo producto
   const [nombreP, setNombreP] = useState('');
   const [categoria, setCategoria] = useState('');
   const [precio, setPrecio] = useState('');
   const [cantidad, setCantidad] = useState('');
   const [umbral, setUmbral] = useState('');
   const [proveedorId, setProveedorId] = useState('');
-  // Campos para nuevo proveedor
   const [nombreProv, setNombreProv] = useState('');
   const [contactoProv, setContactoProv] = useState('');
   const [mensaje, setMensaje] = useState('');
 
-  useEffect(() => {
-    cargarDatos();
-  }, []);
+  useEffect(() => { cargarDatos(); }, []);
 
   const cargarDatos = async () => {
     try {
@@ -33,9 +28,7 @@ function AdminModule() {
       setProveedores(provRes.data);
       const ventasRes = await axios.get('/api/ventas');
       setVentas(ventasRes.data);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
   };
 
   const agregarProducto = async (e) => {
@@ -45,7 +38,7 @@ function AdminModule() {
       return;
     }
     try {
-      const res = await axios.post('/api/productos', {
+      await axios.post('/api/productos', {
         nombre: nombreP,
         categoria: categoria,
         precio: parseFloat(precio),
@@ -54,57 +47,34 @@ function AdminModule() {
         proveedor: proveedorId ? { id: parseInt(proveedorId, 10) } : null
       });
       setMensaje('Producto agregado con éxito.');
-      setNombreP('');
-      setCategoria('');
-      setPrecio('');
-      setCantidad('');
-      setUmbral('');
-      setProveedorId('');
+      setNombreP(''); setCategoria(''); setPrecio(''); setCantidad(''); setUmbral(''); setProveedorId('');
       cargarDatos();
-    } catch (err) {
-      console.error(err);
-      setMensaje('Error al agregar producto.');
-    }
+    } catch (err) { console.error(err); setMensaje('Error al agregar producto.'); }
   };
 
   const eliminarProducto = async (id) => {
     if (!window.confirm('¿Eliminar este producto?')) return;
-    try {
-      await axios.delete(`/api/productos/${id}`);
-      setMensaje('Producto eliminado.');
-      cargarDatos();
-    } catch (err) {
-      console.error(err);
-      setMensaje('Error al eliminar producto.');
-    }
+    try { await axios.delete(`/api/productos/${id}`); setMensaje('Producto eliminado.'); cargarDatos(); }
+    catch (err) { console.error(err); setMensaje('Error al eliminar producto.'); }
   };
 
   const agregarProveedor = async (e) => {
     e.preventDefault();
-    if (!nombreProv) {
-      setMensaje('Debe introducir el nombre del proveedor.');
-      return;
-    }
+    if (!nombreProv) { setMensaje('Debe introducir el nombre del proveedor.'); return; }
     try {
-      await axios.post('/api/proveedores', {
-        nombre: nombreProv,
-        contacto: contactoProv
-      });
+      await axios.post('/api/proveedores', { nombre: nombreProv, contacto: contactoProv });
       setMensaje('Proveedor agregado con éxito.');
-      setNombreProv('');
-      setContactoProv('');
+      setNombreProv(''); setContactoProv('');
       cargarDatos();
-    } catch (err) {
-      console.error(err);
-      setMensaje('Error al agregar proveedor.');
-    }
+    } catch (err) { console.error(err); setMensaje('Error al agregar proveedor.'); }
   };
 
   return (
     <div>
-      <h2>Módulo Administrador</h2>
+      <h2 style={{ marginTop: 0 }}>Módulo Administrador</h2>
       {mensaje && <div className={mensaje.includes('éxito') ? 'success' : 'alert'}>{mensaje}</div>}
-      <section>
+
+      <section style={{ marginBottom: 20 }}>
         <h3>Productos</h3>
         <table>
           <thead>
@@ -140,49 +110,22 @@ function AdminModule() {
         </table>
         <h4>Agregar producto</h4>
         <form onSubmit={agregarProducto}>
-          <input
-            type="text"
-            placeholder="Nombre"
-            value={nombreP}
-            onChange={(e) => setNombreP(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Categoría"
-            value={categoria}
-            onChange={(e) => setCategoria(e.target.value)}
-          />
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Precio"
-            value={precio}
-            onChange={(e) => setPrecio(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Cantidad"
-            value={cantidad}
-            onChange={(e) => setCantidad(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Umbral de alerta"
-            value={umbral}
-            onChange={(e) => setUmbral(e.target.value)}
-          />
+          <input type="text" placeholder="Nombre" value={nombreP} onChange={(e) => setNombreP(e.target.value)} />
+          <input type="text" placeholder="Categoría" value={categoria} onChange={(e) => setCategoria(e.target.value)} />
+          <input type="number" step="0.01" placeholder="Precio" value={precio} onChange={(e) => setPrecio(e.target.value)} />
+          <input type="number" placeholder="Cantidad" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
+          <input type="number" placeholder="Umbral de alerta" value={umbral} onChange={(e) => setUmbral(e.target.value)} />
           <select value={proveedorId} onChange={(e) => setProveedorId(e.target.value)}>
             <option value="">Proveedor</option>
             {proveedores.map((prov) => (
-              <option key={prov.id} value={prov.id}>
-                {prov.nombre}
-              </option>
+              <option key={prov.id} value={prov.id}>{prov.nombre}</option>
             ))}
           </select>
           <button type="submit">Agregar</button>
         </form>
       </section>
-      <section>
+
+      <section style={{ marginBottom: 20 }}>
         <h3>Proveedores</h3>
         <table>
           <thead>
@@ -204,21 +147,12 @@ function AdminModule() {
         </table>
         <h4>Agregar proveedor</h4>
         <form onSubmit={agregarProveedor}>
-          <input
-            type="text"
-            placeholder="Nombre"
-            value={nombreProv}
-            onChange={(e) => setNombreProv(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Contacto"
-            value={contactoProv}
-            onChange={(e) => setContactoProv(e.target.value)}
-          />
+          <input type="text" placeholder="Nombre" value={nombreProv} onChange={(e) => setNombreProv(e.target.value)} />
+          <input type="text" placeholder="Contacto" value={contactoProv} onChange={(e) => setContactoProv(e.target.value)} />
           <button type="submit">Agregar</button>
         </form>
       </section>
+
       <section>
         <h3>Historial de ventas</h3>
         <table>

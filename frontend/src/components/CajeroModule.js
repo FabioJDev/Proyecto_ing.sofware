@@ -49,33 +49,36 @@ function CajeroModule() {
 
   return (
     <div>
-      <h2>Módulo Cajero</h2>
+      <h2 style={{ marginTop: 0 }}>Módulo Cajero</h2>
       {mensaje && <div className={mensaje.includes('éxito') ? 'success' : 'alert'}>{mensaje}</div>}
-      <h3>Registrar pago</h3>
-      <form onSubmit={registrarPago}>
-        <label>
-          Venta:
-          <select value={saleId} onChange={(e) => setSaleId(e.target.value)}>
-            <option value="">Seleccione...</option>
-            {ventas.map((v) => (
-              <option key={v.id} value={v.id}>
-                Venta #{v.id} – {v.cantidad} × {v.producto.nombre} – Total ${v.total.toFixed(2)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          Monto:
-          <input
-            type="number"
-            min="0"
-            step="0.01"
-            value={monto}
-            onChange={(e) => setMonto(e.target.value)}
-          />
-        </label>
-        <button type="submit">Registrar</button>
-      </form>
+
+      <section>
+        <h3>Registrar pago</h3>
+        <form onSubmit={registrarPago}>
+          <label>
+            Venta
+            <select value={saleId} onChange={(e) => setSaleId(e.target.value)}>
+              <option value="">Seleccione...</option>
+              {ventas.map((v) => (
+                <option key={v.id} value={v.id}>
+                  Venta #{v.id} – {v.cantidad} × {v.producto.nombre} – Total ${v.total.toFixed(2)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Monto
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              value={monto}
+              onChange={(e) => setMonto(e.target.value)}
+            />
+          </label>
+          <button type="submit">Registrar</button>
+        </form>
+      </section>
     </div>
   );
 }

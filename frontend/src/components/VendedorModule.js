@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 /**
- * Módulo para el rol de Vendedor.  Permite consultar el stock
- * en tiempo real y registrar ventas.  Al registrar una venta se
- * descuenta automáticamente del inventario y se muestra un mensaje.
+ * Módulo para el rol de Vendedor.  Permite consultar el stock y registrar ventas.
  */
 function VendedorModule() {
   const [productos, setProductos] = useState([]);
@@ -38,7 +36,6 @@ function VendedorModule() {
       });
       if (res.data) {
         setMensaje('Venta registrada con éxito.');
-        // recargar productos para ver stock actualizado
         cargarProductos();
       } else {
         setMensaje('No fue posible registrar la venta (stock insuficiente).');
@@ -51,58 +48,64 @@ function VendedorModule() {
 
   return (
     <div>
-      <h2>Módulo Vendedor</h2>
+      <h2 style={{ marginTop: 0 }}>Módulo Vendedor</h2>
       {mensaje && <div className={mensaje.includes('éxito') ? 'success' : 'alert'}>{mensaje}</div>}
-      <h3>Listado de productos</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-          </tr>
-        </thead>
-        <tbody>
-          {productos.map((p) => (
-            <tr key={p.id}>
-              <td>{p.id}</td>
-              <td>{p.nombre}</td>
-              <td>{p.categoria}</td>
-              <td>${p.precio.toFixed(2)}</td>
-              <td>{p.cantidad}</td>
+
+      <section style={{ marginBottom: 16 }}>
+        <h3>Listado de productos</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <h3>Registrar venta</h3>
-      <form onSubmit={registrarVenta}>
-        <label>
-          Producto:
-          <select
-            value={selectedProduct}
-            onChange={(e) => setSelectedProduct(e.target.value)}
-          >
-            <option value="">Seleccione...</option>
+          </thead>
+          <tbody>
             {productos.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.nombre} (Stock: {p.cantidad})
-              </option>
+              <tr key={p.id}>
+                <td>{p.id}</td>
+                <td>{p.nombre}</td>
+                <td>{p.categoria}</td>
+                <td>${p.precio.toFixed(2)}</td>
+                <td>{p.cantidad}</td>
+              </tr>
             ))}
-          </select>
-        </label>
-        <label>
-          Cantidad:
-          <input
-            type="number"
-            min="1"
-            value={cantidad}
-            onChange={(e) => setCantidad(e.target.value)}
-          />
-        </label>
-        <button type="submit">Registrar</button>
-      </form>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h3>Registrar venta</h3>
+        <form onSubmit={registrarVenta}>
+          <label>
+            Producto
+            <select
+              value={selectedProduct}
+              onChange={(e) => setSelectedProduct(e.target.value)}
+            >
+              <option value="">Seleccione...</option>
+              {productos.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.nombre} (Stock: {p.cantidad})
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Cantidad
+            <input
+              type="number"
+              min="1"
+              value={cantidad}
+              onChange={(e) => setCantidad(e.target.value)}
+            />
+          </label>
+          <button type="submit">Registrar</button>
+        </form>
+      </section>
     </div>
   );
 }

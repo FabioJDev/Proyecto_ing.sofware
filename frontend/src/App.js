@@ -5,10 +5,10 @@ import AdminModule from './components/AdminModule';
 import ProveedorModule from './components/ProveedorModule';
 import AlertModule from './components/AlertModule';
 import Home from './components/Home';
+import Sidebar from './components/Sidebar';
 
 /**
- * Componente principal de la aplicación.  Muestra un menú de navegación
- * superior y carga los distintos módulos según la selección del usuario.
+ * Componente principal con layout de panel lateral fijo y área de contenido.
  */
 function App() {
   const [active, setActive] = useState('home');
@@ -31,21 +31,11 @@ function App() {
   };
 
   return (
-    <div>
-      <header>
-        <h1>Camaleon Bodega</h1>
-        <nav>
-          <button onClick={() => setActive('home')}>Inicio</button>
-          <button onClick={() => setActive('vendedor')}>Vendedor</button>
-          <button onClick={() => setActive('cajero')}>Cajero</button>
-          <button onClick={() => setActive('admin')}>Administrador</button>
-          <button onClick={() => setActive('proveedor')}>Proveedor</button>
-          <button onClick={() => setActive('alertas')}>Alertas</button>
-        </nav>
-      </header>
-      <main>
+    <div className="cb-layout">
+      <Sidebar active={active} onSelect={setActive} />
+      <div className="cb-content">
         {renderModule()}
-      </main>
+      </div>
     </div>
   );
 }

@@ -1,49 +1,184 @@
-/* Estilos globales para la aplicación Camaleon Bodega */
+/* Estilos globales para la aplicación Camaleón Bodega (nuevo diseño) */
+
+:root {
+  --cb-blue: #003f91;
+  --cb-blue-light: #1a5bc4;
+  --cb-green: #0da57a;
+  --cb-text: #1f2a44;
+  --cb-muted: #6b7b93;
+  --cb-bg: #f7f8fb;
+  --cb-card: #ffffff;
+  --cb-border: #e6e9ef;
+}
+
+* { box-sizing: border-box; }
 
 body {
-  background-color: #f5f5f5;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--cb-bg);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   margin: 0;
   padding: 0;
-  color: #333;
+  color: var(--cb-text);
 }
 
-header {
-  background-color: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
-  padding: 1rem 2rem;
+/* Layout principal */
+.cb-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.cb-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  width: 260px;
+  min-height: 100vh;
+  background: var(--cb-blue);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cb-logo {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.3px;
+  margin-bottom: 8px;
+}
+
+.cb-nav { display: flex; flex-direction: column; gap: 8px; }
+
+.cb-nav-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-
-h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #1a73e8;
-}
-
-nav {
-  display: flex;
-  gap: 1rem;
-}
-
-nav button {
-  background-color: #1a73e8;
-  border: none;
-  padding: 0.5rem 1rem;
-  color: white;
-  border-radius: 4px;
+  gap: 10px;
+  width: 100%;
+  background: transparent;
+  color: #ffffff;
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 0.9rem;
+  text-align: left;
 }
 
-nav button:hover {
-  background-color: #165bb3;
+.cb-nav-item:hover { background: var(--cb-blue-light); }
+
+.cb-nav-item.active { background: var(--cb-green); color: #ffffff; }
+
+.cb-nav-icon { font-size: 1.1rem; display: inline-flex; }
+.cb-nav-text { font-size: 0.95rem; font-weight: 600; }
+
+.cb-content {
+  flex: 1;
+  padding: 28px;
 }
 
-main {
-  padding: 2rem;
+/* Tarjetas del dashboard */
+.cb-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.cb-card {
+  background: var(--cb-card);
+  border: 1px solid var(--cb-border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  position: relative;
+}
+
+.cb-card .title { color: var(--cb-muted); font-size: 0.85rem; margin: 0 0 8px; }
+.cb-card .value { font-size: 1.8rem; font-weight: 800; color: var(--cb-blue); margin: 0; }
+.cb-card .value.green { color: var(--cb-green); }
+.cb-card .icon { position: absolute; right: 12px; top: 12px; font-size: 1.4rem; color: var(--cb-blue-light); opacity: 0.75; }
+
+/* Formularios y tablas con estilo moderno */
+main, .cb-content { color: var(--cb-text); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  background: #fff;
+  border: 1px solid var(--cb-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+table thead th {
+  background: var(--cb-blue);
+  color: #fff;
+  text-align: left;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+
+table tbody td {
+  padding: 10px 12px;
+  border-top: 1px solid var(--cb-border);
+}
+
+table tbody tr:nth-child(even) { background: #fafbff; }
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 560px;
+  background: #fff;
+  padding: 16px;
+  border: 1px solid var(--cb-border);
+  border-radius: 10px;
+}
+
+form input, form select {
+  padding: 10px 12px;
+  border: 1px solid var(--cb-border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+form button, button {
+  align-self: flex-start;
+  background-color: var(--cb-green);
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+form button:hover, button:hover { filter: brightness(0.95); }
+
+.alert {
+  padding: 10px 12px;
+  border: 1px solid #f5c2c7;
+  background-color: #f8d7da;
+  color: #842029;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.success {
+  padding: 10px 12px;
+  border: 1px solid #c3e6cb;
+  background-color: #d4edda;
+  color: #0f5132;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* Responsivo */
+@media (max-width: 1200px) { .cb-cards { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) {
+  .cb-sidebar { width: 220px; }
+  .cb-cards { grid-template-columns: 1fr; }
 }
 
 table {

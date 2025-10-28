@@ -7,22 +7,18 @@ import axios from 'axios';
 function AlertModule() {
   const [alertas, setAlertas] = useState([]);
 
-  useEffect(() => {
-    cargarAlertas();
-  }, []);
+  useEffect(() => { cargarAlertas(); }, []);
 
   const cargarAlertas = async () => {
     try {
       const res = await axios.get('/api/alertas');
       setAlertas(res.data);
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
   };
 
   return (
     <div>
-      <h2>Alertas de bajo stock</h2>
+      <h2 style={{ marginTop: 0 }}>Alertas de bajo stock</h2>
       {alertas.length === 0 ? (
         <p>No hay alertas.</p>
       ) : (
